@@ -2,7 +2,11 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>FINAL DAWN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FINAL DAWN | STALKER Launcher</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -14,171 +18,247 @@
 
 body{
     overflow:hidden;
-    font-family:Arial, sans-serif;
+    font-family:'Orbitron',sans-serif;
     background:black;
-    color:white;
+    color:#fff;
 }
 
-/* VIDEO BACKGROUND */
+/* BACKGROUND */
 
-.bg{
+.background{
     position:fixed;
     width:100%;
     height:100%;
-    background:url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1920') center/cover no-repeat;
-    filter:brightness(0.3);
-    animation:bgzoom 20s infinite alternate;
+    background:
+    linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.75)),
+    url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1920') center/cover no-repeat;
+
+    animation:bgMove 25s infinite alternate;
 }
 
-@keyframes bgzoom{
+@keyframes bgMove{
+
     from{
         transform:scale(1);
     }
 
     to{
-        transform:scale(1.1);
+        transform:scale(1.08);
     }
 }
 
-/* OVERLAY */
+/* RADIATION OVERLAY */
 
-.overlay{
+.radiation{
     position:absolute;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.55);
+
+    background:
+    repeating-linear-gradient(
+        0deg,
+        rgba(0,255,0,0.02),
+        rgba(0,255,0,0.02) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+
+    pointer-events:none;
+
+    animation:scan 8s linear infinite;
 }
 
-/* PARTICLES */
+@keyframes scan{
 
-.particles span{
-    position:absolute;
-    width:4px;
-    height:4px;
-    background:orange;
-    border-radius:50%;
-    animation:float 10s linear infinite;
-    opacity:0.7;
-}
-
-@keyframes float{
     from{
-        transform:translateY(100vh);
-        opacity:0;
+        transform:translateY(-100%);
     }
 
     to{
-        transform:translateY(-10vh);
-        opacity:1;
+        transform:translateY(100%);
     }
 }
 
-/* MAIN UI */
+/* GLITCH EFFECT */
 
-.container{
+.glitch{
     position:relative;
-    z-index:2;
-    text-align:center;
-    top:50%;
-    transform:translateY(-50%);
-}
-
-/* TITLE */
-
-h1{
     font-size:110px;
-    color:orange;
+    color:#ff9800;
+    text-transform:uppercase;
+
     text-shadow:
-    0 0 10px orange,
-    0 0 20px orange,
-    0 0 40px red;
+    0 0 10px #ff9800,
+    0 0 20px red,
+    0 0 40px orange;
 
-    animation:pulse 3s infinite;
+    animation:flicker 3s infinite;
 }
 
-@keyframes pulse{
-    0%{
-        text-shadow:
-        0 0 10px orange,
-        0 0 20px orange;
-    }
+.glitch::before,
+.glitch::after{
+    content:attr(data-text);
 
-    50%{
-        text-shadow:
-        0 0 20px orange,
-        0 0 40px red,
-        0 0 80px orange;
-    }
-
-    100%{
-        text-shadow:
-        0 0 10px orange,
-        0 0 20px orange;
-    }
-}
-
-.subtitle{
-    margin-top:10px;
-    font-size:28px;
-    color:#ccc;
-    letter-spacing:4px;
-}
-
-/* BUTTON */
-
-.join-btn{
-    display:inline-block;
-    margin-top:50px;
-    padding:18px 50px;
-
-    border:2px solid orange;
-    border-radius:12px;
-
-    color:white;
-    text-decoration:none;
-    font-size:24px;
-    font-weight:bold;
-
-    transition:0.3s;
-    position:relative;
+    position:absolute;
+    left:0;
+    width:100%;
     overflow:hidden;
 }
 
-.join-btn:hover{
-    background:orange;
-    color:black;
-
-    transform:scale(1.05);
-
-    box-shadow:
-    0 0 20px orange,
-    0 0 40px red;
+.glitch::before{
+    color:red;
+    z-index:-1;
+    animation:glitchTop 2s infinite linear alternate-reverse;
 }
 
-/* SERVER INFO */
+.glitch::after{
+    color:cyan;
+    z-index:-2;
+    animation:glitchBottom 2s infinite linear alternate-reverse;
+}
 
-.server-box{
+@keyframes glitchTop{
+    0%{clip-path:inset(0 0 80% 0);transform:translate(-2px,-2px);}
+    100%{clip-path:inset(60% 0 0 0);transform:translate(2px,2px);}
+}
+
+@keyframes glitchBottom{
+    0%{clip-path:inset(80% 0 0 0);transform:translate(2px,2px);}
+    100%{clip-path:inset(0 0 60% 0);transform:translate(-2px,-2px);}
+}
+
+@keyframes flicker{
+
+    0%{opacity:1;}
+    50%{opacity:0.9;}
+    52%{opacity:0.5;}
+    55%{opacity:1;}
+    100%{opacity:1;}
+}
+
+/* MAIN CONTAINER */
+
+.container{
+    position:relative;
+    z-index:5;
+
+    width:100%;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+}
+
+/* SUBTITLE */
+
+.subtitle{
+    margin-top:10px;
+    color:#bbb;
+    font-size:24px;
+    letter-spacing:6px;
+}
+
+/* BUTTONS */
+
+.buttons{
     margin-top:50px;
 
-    display:inline-block;
+    display:flex;
+    gap:25px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
 
-    padding:25px 50px;
+.btn{
+    padding:18px 45px;
 
-    border:1px solid rgba(255,140,0,0.4);
+    border:2px solid #ff9800;
 
-    background:rgba(0,0,0,0.45);
+    color:white;
+    text-decoration:none;
+
+    border-radius:12px;
+
+    font-size:20px;
+    font-weight:bold;
+
+    transition:0.3s;
+
+    background:rgba(0,0,0,0.4);
 
     backdrop-filter:blur(5px);
 
-    border-radius:15px;
-
     box-shadow:
-    0 0 20px rgba(255,140,0,0.2);
+    0 0 15px rgba(255,152,0,0.3);
 }
 
-.server-box p{
-    margin:10px 0;
-    font-size:22px;
+.btn:hover{
+
+    transform:scale(1.08);
+
+    background:#ff9800;
+    color:black;
+
+    box-shadow:
+    0 0 20px orange,
+    0 0 50px red;
+}
+
+/* INFO PANEL */
+
+.panel{
+
+    margin-top:60px;
+
+    width:700px;
+    max-width:90%;
+
+    padding:30px;
+
+    border:1px solid rgba(255,152,0,0.3);
+
+    border-radius:15px;
+
+    background:rgba(0,0,0,0.45);
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+    0 0 25px rgba(255,152,0,0.15);
+}
+
+.panel h2{
+    margin-bottom:20px;
+    color:#ff9800;
+}
+
+.panel p{
+    margin:12px 0;
+    font-size:18px;
+    color:#ddd;
+}
+
+/* STATUS DOT */
+
+.status{
+    display:inline-block;
+
+    width:12px;
+    height:12px;
+
+    background:lime;
+
+    border-radius:50%;
+
+    margin-right:10px;
+
+    box-shadow:
+    0 0 10px lime;
 }
 
 /* FOOTER */
@@ -186,9 +266,13 @@ h1{
 .footer{
     position:absolute;
     bottom:20px;
+
     width:100%;
+
     text-align:center;
-    color:#777;
+
+    color:#666;
+
     font-size:14px;
 }
 
@@ -196,21 +280,21 @@ h1{
 
 @media(max-width:900px){
 
-    h1{
+    .glitch{
         font-size:60px;
     }
 
     .subtitle{
-        font-size:18px;
+        font-size:16px;
     }
 
-    .join-btn{
-        font-size:18px;
-        padding:14px 30px;
+    .btn{
+        font-size:16px;
+        padding:14px 28px;
     }
 
-    .server-box{
-        width:90%;
+    .panel{
+        width:95%;
     }
 }
 
@@ -219,43 +303,68 @@ h1{
 
 <body>
 
-<div class="bg"></div>
+<div class="background"></div>
 
-<div class="overlay"></div>
-
-<div class="particles">
-    <span style="left:10%;animation-delay:0s;"></span>
-    <span style="left:20%;animation-delay:2s;"></span>
-    <span style="left:30%;animation-delay:4s;"></span>
-    <span style="left:40%;animation-delay:1s;"></span>
-    <span style="left:50%;animation-delay:5s;"></span>
-    <span style="left:60%;animation-delay:3s;"></span>
-    <span style="left:70%;animation-delay:6s;"></span>
-    <span style="left:80%;animation-delay:2s;"></span>
-    <span style="left:90%;animation-delay:4s;"></span>
-</div>
+<div class="radiation"></div>
 
 <div class="container">
 
-<h1>FINAL DAWN</h1>
+<h1 class="glitch" data-text="FINAL DAWN">
+FINAL DAWN
+</h1>
 
 <div class="subtitle">
-DAYZ STALKER SURVIVAL
+DAYZ STALKER SURVIVAL PROJECT
 </div>
 
-<a class="join-btn" href="steam://connect/178.159.214.232:2300">
-JOIN SERVER
+<div class="buttons">
+
+<a class="btn" href="steam://connect/127.0.0.1:2302">
+🎮 JOIN SERVER
 </a>
 
-<div class="server-box">
+<a class="btn" href="https://discord.gg/">
+💬 DISCORD
+</a>
 
-<p>☢️ SERVER STATUS: ONLINE</p>
+<a class="btn" href="#">
+🗺️ MAP
+</a>
 
-<p>🎮 IP: 178.159.214.232:2300</p>
+<a class="btn" href="#">
+🛒 DONATE
+</a>
 
-<p>🔥 MODDED EXPERIENCE</p>
+</div>
 
-<p>💀 HARDCORE SURVIVAL</p>
+<div class="panel">
+
+<h2>SERVER STATUS</h2>
+
+<p>
+<span class="status"></span>
+ONLINE
+</p>
+
+<p>
+☢️ IP: 127.0.0.1:2302
+</p>
+
+<p>
+👥 Players: 0 / 100
+</p>
+
+<p>
+🔥 Hardcore STALKER Experience
+</p>
+
+<p>
+⚡ Custom Anomalies & Artefacts
+</p>
+
+<p>
+💀 Expansion + AI + Underground Labs
+</p>
 
 </div>
 
